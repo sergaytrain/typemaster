@@ -3,100 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stamina Pro - Тренажер слепой печати</title>
+    <title>TypeMaster Pro - Тренажер печати</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --error: #d63031;
-            --text-light: #636e72;
-            --bg-light: #dfe6e9;
+            /* Цвета светлой темы */
+            --primary-light: #6366f1;
+            --secondary-light: #8b5cf6;
+            --success-light: #10b981;
+            --warning-light: #f59e0b;
+            --error-light: #ef4444;
+            --text-light: #374151;
+            --bg-light: #f9fafb;
+            --card-light: #ffffff;
+            --border-light: #e5e7eb;
+            --highlight-light: #e0e7ff;
+            
+            /* Цвета темной темы */
+            --primary-dark: #818cf8;
+            --secondary-dark: #a78bfa;
+            --success-dark: #34d399;
+            --warning-dark: #fbbf24;
+            --error-dark: #f87171;
+            --text-dark: #f3f4f6;
+            --bg-dark: #111827;
+            --card-dark: #1f2937;
+            --border-dark: #374151;
+            --highlight-dark: #3730a3;
+            
+            /* Цвета серой темы */
+            --primary-gray: #6b7280;
+            --secondary-gray: #9ca3af;
+            --success-gray: #6ee7b7;
+            --warning-gray: #fcd34d;
+            --error-gray: #fca5a5;
+            --text-gray: #1f2937;
+            --bg-gray: #e5e7eb;
+            --card-gray: #f3f4f6;
+            --border-gray: #d1d5db;
+            --highlight-gray: #d1d5db;
+            
+            /* Текущие переменные (будут изменяться) */
+            --primary: var(--primary-light);
+            --secondary: var(--secondary-light);
+            --success: var(--success-light);
+            --warning: var(--warning-light);
+            --error: var(--error-light);
+            --text: var(--text-light);
+            --bg: var(--bg-light);
+            --card: var(--card-light);
+            --border: var(--border-light);
+            --highlight: var(--highlight-light);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
-            background-color: var(--light);
-            color: var(--dark);
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s ease;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2rem 1.5rem;
         }
         
         header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
         }
         
         h1 {
             color: var(--primary);
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .subtitle {
-            color: var(--dark);
-            opacity: 0.7;
-            font-size: 1.1rem;
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 1.15rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .stats {
-            display: flex;
-            justify-content: space-between;
-            background: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border);
         }
         
         .stat-item {
             text-align: center;
+            padding: 0.75rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .stat-item:hover {
+            background: var(--highlight);
         }
         
         .stat-value {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--primary);
+            margin-bottom: 0.25rem;
         }
         
         .stat-label {
             font-size: 0.9rem;
-            color: var(--dark);
+            color: var(--text);
             opacity: 0.7;
+            font-weight: 500;
         }
         
         .text-display {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: var(--card);
+            padding: 2.25rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             margin-bottom: 2rem;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             line-height: 1.8;
-            min-height: 200px;
+            min-height: 220px;
             position: relative;
             transition: all 0.3s ease;
+            border: 1px solid var(--border);
         }
         
         .text-display .current {
-            background-color: var(--secondary);
+            background-color: var(--primary);
             color: white;
-            padding: 0 2px;
-            border-radius: 3px;
+            padding: 0 4px;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .text-display .current::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
         
         .text-display .correct {
@@ -106,40 +185,54 @@
         .text-display .incorrect {
             color: var(--error);
             text-decoration: underline;
+            text-decoration-color: var(--error);
         }
         
         .input-area {
             display: flex;
             margin-bottom: 2rem;
+            position: relative;
         }
         
         #text-input {
             flex: 1;
-            padding: 1rem;
-            font-size: 1.1rem;
-            border: 2px solid #ddd;
-            border-radius: 8px 0 0 8px;
+            padding: 1.25rem;
+            font-size: 1.15rem;
+            border: 2px solid var(--border);
+            border-radius: 12px 0 0 12px;
             outline: none;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            background: var(--card);
+            color: var(--text);
+            caret-color: var(--primary);
         }
         
         #text-input:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
         
         #start-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0 2rem;
-            font-size: 1.1rem;
-            border-radius: 0 8px 8px 0;
+            padding: 0 2.5rem;
+            font-size: 1.15rem;
+            font-weight: 500;
+            border-radius: 0 12px 12px 0;
             cursor: pointer;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         #start-btn:hover {
-            background: #5649c0;
+            background: var(--secondary);
+        }
+        
+        #start-btn i {
+            margin-right: 8px;
         }
         
         .controls {
@@ -150,13 +243,21 @@
         }
         
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 1rem 1.75rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
         }
         
         .btn-primary {
@@ -165,120 +266,140 @@
         }
         
         .btn-primary:hover {
-            background: #5649c0;
+            background: var(--secondary);
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .btn-secondary {
-            background: var(--secondary);
-            color: white;
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
         }
         
         .btn-secondary:hover {
-            background: #8c7ae6;
+            background: var(--highlight);
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .btn-warning {
             background: var(--warning);
-            color: var(--dark);
+            color: var(--text);
         }
         
         .btn-warning:hover {
-            background: #fdcb6e;
+            background: #f59e0b;
             transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .text-selector {
             margin-bottom: 2rem;
+            position: relative;
         }
         
         #text-options {
             width: 100%;
             padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             font-size: 1rem;
             outline: none;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            background: var(--card);
+            color: var(--text);
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
         }
         
         #text-options:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
         
         .timer {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.75rem;
+            font-weight: 700;
             color: var(--primary);
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
         }
         
         .progress-container {
             width: 100%;
             height: 10px;
-            background: #ddd;
+            background: var(--border);
             border-radius: 5px;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             overflow: hidden;
         }
         
         .progress-bar {
             height: 100%;
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             width: 0%;
             transition: width 0.3s;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: var(--dark);
-            opacity: 0.7;
-            font-size: 0.9rem;
+            border-radius: 5px;
         }
         
         /* Стили для режимов */
         .modes {
             display: flex;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             position: relative;
+            background: var(--card);
+            padding: 0.75rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
         }
         
         .mode {
-            padding: 0.8rem 1.5rem;
-            margin: 0 0.5rem;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.25rem;
             cursor: pointer;
             position: relative;
             transition: all 0.3s;
             font-weight: 500;
-            color: var(--text-light);
+            color: var(--text);
+            opacity: 0.7;
+            border-radius: 12px;
+            white-space: nowrap;
         }
         
         .mode.active {
+            opacity: 1;
             color: var(--primary);
+            background: var(--highlight);
         }
         
         .mode:hover {
+            opacity: 1;
             color: var(--primary);
         }
         
         .mode::after {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 80%;
+            height: 3px;
             background: var(--primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            border-radius: 3px 3px 0 0;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
         
         .mode.active::after {
-            transform: scaleX(1);
+            transform: translateX(-50%) scaleX(1);
         }
         
         .mode-tooltip {
@@ -286,10 +407,10 @@
             bottom: 100%;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--dark);
-            color: white;
+            background: var(--card);
+            color: var(--text);
             padding: 0.5rem 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 0.8rem;
             opacity: 0;
             visibility: hidden;
@@ -298,6 +419,9 @@
             text-align: center;
             margin-bottom: 10px;
             pointer-events: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            z-index: 10;
         }
         
         .mode:hover .mode-tooltip {
@@ -309,46 +433,52 @@
             position: relative;
         }
         
-        .mode-indicator {
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-            z-index: 1;
-        }
-        
         /* Таймер настройки */
         .timer-settings {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             opacity: 0;
             height: 0;
             overflow: hidden;
             transition: all 0.3s ease;
+            background: var(--card);
+            padding: 0 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
         }
         
         .timer-settings.active {
             opacity: 1;
             height: auto;
-            margin-bottom: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
         .timer-settings label {
             font-weight: 500;
-            color: var(--text-light);
+            color: var(--text);
+            opacity: 0.8;
         }
         
         .timer-settings input {
-            width: 60px;
-            padding: 0.5rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            width: 70px;
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
             text-align: center;
+            font-weight: 500;
+            background: var(--card);
+            color: var(--text);
+        }
+        
+        .timer-settings input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            outline: none;
         }
         
         .combine-texts {
@@ -356,13 +486,61 @@
             height: 0;
             overflow: hidden;
             transition: all 0.3s ease;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
         
         .combine-texts.active {
             opacity: 1;
             height: auto;
+        }
+        
+        /* Темы */
+        .theme-switcher {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            background: var(--card);
+            border-radius: 12px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            z-index: 5;
+        }
+        
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin: 0 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        .theme-btn.active {
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .theme-btn.light {
+            background: #f9fafb;
+            color: #374151;
+        }
+        
+        .theme-btn.dark {
+            background: #111827;
+            color: #f3f4f6;
+        }
+        
+        .theme-btn.gray {
+            background: #e5e7eb;
+            color: #1f2937;
         }
         
         /* Анимации */
@@ -375,14 +553,59 @@
             animation: fadeIn 0.5s ease forwards;
         }
         
+        /* Иконки */
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Нотификации */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card);
+            color: var(--text);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+        
+        /* Адаптивность */
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
+                padding: 1.5rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
             }
             
             .stats {
-                flex-direction: column;
-                gap: 1rem;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .controls {
@@ -391,20 +614,71 @@
             
             .modes {
                 flex-wrap: wrap;
+                justify-content: center;
             }
             
             .mode {
-                margin: 0.3rem;
+                margin: 0.25rem;
                 padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .text-display {
+                padding: 1.5rem;
+                font-size: 1.1rem;
+            }
+            
+            #text-input {
+                padding: 1rem;
+            }
+            
+            #start-btn {
+                padding: 0 1.5rem;
+            }
+            
+            .theme-switcher {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-settings {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .timer-settings input {
+                width: 100%;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Stamina Pro</h1>
-            <p class="subtitle">Современный тренажер слепой печати</p>
+            <div class="theme-switcher">
+                <button class="theme-btn light active" data-theme="light" title="Светлая тема">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="theme-btn dark" data-theme="dark" title="Темная тема">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="theme-btn gray" data-theme="gray" title="Серая тема">
+                    <i class="fas fa-cloud"></i>
+                </button>
+            </div>
+            
+            <h1>TypeMaster Pro</h1>
+            <p class="subtitle">Современный тренажер слепой печати с персонализацией и аналитикой</p>
         </header>
         
         <div class="stats">
@@ -436,32 +710,33 @@
         <div class="mode-selector">
             <div class="modes">
                 <div class="mode active" data-mode="small">
-                    Маленький текст
-                    <div class="mode-tooltip">Текст, который обычно занимает до 1 минуты для набора</div>
+                    <i class="fas fa-align-left icon"></i> Короткий
+                    <div class="mode-tooltip">Короткие тексты (до 1 минуты набора)</div>
                 </div>
                 <div class="mode" data-mode="large">
-                    Большой текст
-                    <div class="mode-tooltip">Более длинный текст без ограничения по времени</div>
+                    <i class="fas fa-align-center icon"></i> Длинный
+                    <div class="mode-tooltip">Длинные тексты без ограничения времени</div>
                 </div>
                 <div class="mode" data-mode="timed">
-                    Текст по таймеру
+                    <i class="fas fa-stopwatch icon"></i> На время
                     <div class="mode-tooltip">Наберите как можно больше текста за указанное время</div>
                 </div>
             </div>
-            <div class="mode-indicator"></div>
         </div>
         
         <!-- Настройки таймера -->
         <div class="timer-settings" id="timer-settings">
-            <label for="timer-minutes">Минут:</label>
+            <label for="timer-minutes"><i class="far fa-clock"></i> Минут:</label>
             <input type="number" id="timer-minutes" min="1" max="60" value="2">
-            <label for="timer-seconds">Секунд:</label>
+            <label for="timer-seconds"><i class="far fa-hourglass"></i> Секунд:</label>
             <input type="number" id="timer-seconds" min="0" max="59" value="0">
         </div>
         
         <!-- Кнопка объединения текстов -->
         <div class="combine-texts" id="combine-texts">
-            <button class="btn btn-warning" id="combine-btn">Совместить тексты</button>
+            <button class="btn btn-warning" id="combine-btn">
+                <i class="fas fa-random"></i> Совместить тексты
+            </button>
         </div>
         
         <div class="text-selector">
@@ -475,17 +750,24 @@
         
         <div class="input-area">
             <input type="text" id="text-input" placeholder="Начните печатать..." autocomplete="off">
-            <button id="start-btn">Старт</button>
+            <button id="start-btn">
+                <i class="fas fa-play"></i> Старт
+            </button>
         </div>
         
         <div class="controls">
-            <button class="btn btn-secondary" id="reset-btn">Сброс</button>
-            <button class="btn btn-primary" id="new-text-btn">Новый текст</button>
+            <button class="btn btn-secondary" id="reset-btn">
+                <i class="fas fa-redo"></i> Сброс
+            </button>
+            <button class="btn btn-primary" id="new-text-btn">
+                <i class="fas fa-random"></i> Новый текст
+            </button>
         </div>
         
-        <footer>
-            © 2025 Stamina Pro | Тренажер слепой печати | Разработано с поддержкой <a href="https://deepseek.com/">deepseek.com</a>
-        </footer>
+        <div class="notification" id="notification">
+            <i class="fas fa-check-circle"></i>
+            <span id="notification-message">Тест завершен!</span>
+        </div>
     </div>
     
     <script>
@@ -632,12 +914,14 @@
         const charsDisplay = document.getElementById('chars');
         const progressBar = document.getElementById('progress-bar');
         const modeElements = document.querySelectorAll('.mode');
-        const modeIndicator = document.querySelector('.mode-indicator');
         const timerSettings = document.getElementById('timer-settings');
         const timerMinutes = document.getElementById('timer-minutes');
         const timerSeconds = document.getElementById('timer-seconds');
         const combineTextsSection = document.getElementById('combine-texts');
         const combineBtn = document.getElementById('combine-btn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
         
         // Переменные состояния
         let currentText = '';
@@ -651,6 +935,7 @@
         let currentMode = 'small';
         let targetTime = 120; // 2 минуты по умолчанию для режима по таймеру
         let remainingTime = targetTime;
+        let lastInputLength = 0;
         
         // Инициализация приложения
         function init() {
@@ -679,8 +964,18 @@
             timerMinutes.addEventListener('change', updateTargetTime);
             timerSeconds.addEventListener('change', updateTargetTime);
             
-            // Инициализация индикатора режима
-            updateModeIndicator();
+            // Обработчики для переключения тем
+            themeButtons.forEach(btn => {
+                btn.addEventListener('click', switchTheme);
+            });
+            
+            // Предотвращаем удаление текста
+            textInput.addEventListener('keydown', preventBackspace);
+            textInput.addEventListener('keydown', preventDelete);
+            
+            // Инициализация темы из localStorage
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
         }
         
         // Заполнение выпадающего списка текстами
@@ -690,7 +985,7 @@
             
             // Добавляем маленькие тексты
             const smallGroup = document.createElement('optgroup');
-            smallGroup.label = 'Маленькие тексты';
+            smallGroup.label = 'Короткие тексты';
             texts.forEach((text, index) => {
                 const option = document.createElement('option');
                 option.value = index;
@@ -702,7 +997,7 @@
             
             // Добавляем большие тексты
             const largeGroup = document.createElement('optgroup');
-            largeGroup.label = 'Большие тексты';
+            largeGroup.label = 'Длинные тексты';
             largeTexts.forEach((text, index) => {
                 const option = document.createElement('option');
                 option.value = index;
@@ -775,9 +1070,6 @@
                 e.currentTarget.classList.add('active');
                 currentMode = newMode;
                 
-                // Обновляем индикатор режима
-                updateModeIndicator();
-                
                 // Показываем/скрываем настройки таймера
                 if (newMode === 'timed') {
                     timerSettings.classList.add('active');
@@ -789,18 +1081,6 @@
                 
                 // Выбираем новый текст
                 selectRandomText();
-            }
-        }
-        
-        // Обновление индикатора активного режима
-        function updateModeIndicator() {
-            const activeMode = document.querySelector('.mode.active');
-            if (activeMode) {
-                const modeRect = activeMode.getBoundingClientRect();
-                const containerRect = document.querySelector('.modes').getBoundingClientRect();
-                
-                modeIndicator.style.width = `${modeRect.width}px`;
-                modeIndicator.style.left = `${modeRect.left - containerRect.left}px`;
             }
         }
         
@@ -818,6 +1098,7 @@
             if (!isTyping) {
                 isTyping = true;
                 startTime = new Date();
+                lastInputLength = 0;
                 
                 if (currentMode === 'timed') {
                     // В режиме по таймеру запускаем обратный отсчет
@@ -829,8 +1110,11 @@
                 }
                 
                 textInput.focus();
-                startBtn.textContent = 'Печатайте...';
-                startBtn.style.backgroundColor = '#00b894';
+                startBtn.innerHTML = '<i class="fas fa-keyboard"></i> Печатайте...';
+                startBtn.style.backgroundColor = 'var(--success)';
+                
+                // Показываем уведомление
+                showNotification('Начинайте печатать!', 'success');
             }
         }
         
@@ -880,13 +1164,21 @@
         }
         
         // Проверка вводимого текста
-        function checkTyping() {
+        function checkTyping(e) {
             if (!isTyping) {
                 startTyping();
             }
             
             const inputText = textInput.value;
             const currentCharIndex = inputText.length - 1;
+            
+            // Проверяем, не пытается ли пользователь стереть текст
+            if (inputText.length < lastInputLength) {
+                textInput.value = inputText.substring(0, lastInputLength);
+                return;
+            }
+            
+            lastInputLength = inputText.length;
             
             // Сбрасываем подсветку текущего символа
             const allChars = textDisplay.querySelectorAll('span');
@@ -974,8 +1266,8 @@
             endTime = new Date();
             isTyping = false;
             textInput.disabled = true;
-            startBtn.textContent = 'Тест завершён!';
-            startBtn.style.backgroundColor = '#00b894';
+            startBtn.innerHTML = '<i class="fas fa-check"></i> Завершено';
+            startBtn.style.backgroundColor = 'var(--success)';
             
             // Показываем итоговую статистику
             const totalTime = currentMode === 'timed' ? 
@@ -987,12 +1279,12 @@
             let statsMessage = `Тест завершён!\nВремя: ${minutes} мин ${seconds} сек\nСкорость: ${wpmDisplay.textContent} зн./мин\nТочность: ${accuracyDisplay.textContent}\nПравильных символов: ${correctChars}`;
             
             if (currentMode === 'timed') {
-                statsMessage += `\n\nРежим: Текст по таймеру (${targetTime} сек)`;
+                statsMessage += `\n\nРежим: На время (${targetTime} сек)`;
             } else {
-                statsMessage += `\n\nРежим: ${currentMode === 'small' ? 'Маленький текст' : 'Большой текст'}`;
+                statsMessage += `\n\nРежим: ${currentMode === 'small' ? 'Короткий текст' : 'Длинный текст'}`;
             }
             
-            alert(statsMessage);
+            showNotification(statsMessage, 'success');
         }
         
         // Сброс теста
@@ -1007,6 +1299,7 @@
             totalChars = 0;
             isTyping = false;
             remainingTime = targetTime;
+            lastInputLength = 0;
             
             textInput.value = '';
             textInput.disabled = false;
@@ -1020,8 +1313,8 @@
             charsDisplay.textContent = '0';
             progressBar.style.width = '0%';
             
-            startBtn.textContent = 'Старт';
-            startBtn.style.backgroundColor = '#6c5ce7';
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Старт';
+            startBtn.style.backgroundColor = 'var(--primary)';
             
             displayText();
         }
@@ -1046,6 +1339,88 @@
                 currentText = combinedText;
                 displayText();
                 resetTest();
+                
+                showNotification(`Объединено ${numTexts} текстов`, 'success');
+            }
+        }
+        
+        // Переключение темы
+        function switchTheme(e) {
+            const theme = e.currentTarget.dataset.theme;
+            setTheme(theme);
+            
+            // Сохраняем выбор темы
+            localStorage.setItem('theme', theme);
+            
+            // Обновляем активную кнопку темы
+            themeButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.currentTarget.classList.add('active');
+        }
+        
+        // Установка темы
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.style.setProperty('--primary', 'var(--primary-dark)');
+                document.documentElement.style.setProperty('--secondary', 'var(--secondary-dark)');
+                document.documentElement.style.setProperty('--success', 'var(--success-dark)');
+                document.documentElement.style.setProperty('--warning', 'var(--warning-dark)');
+                document.documentElement.style.setProperty('--error', 'var(--error-dark)');
+                document.documentElement.style.setProperty('--text', 'var(--text-dark)');
+                document.documentElement.style.setProperty('--bg', 'var(--bg-dark)');
+                document.documentElement.style.setProperty('--card', 'var(--card-dark)');
+                document.documentElement.style.setProperty('--border', 'var(--border-dark)');
+                document.documentElement.style.setProperty('--highlight', 'var(--highlight-dark)');
+            } else if (theme === 'gray') {
+                document.documentElement.style.setProperty('--primary', 'var(--primary-gray)');
+                document.documentElement.style.setProperty('--secondary', 'var(--secondary-gray)');
+                document.documentElement.style.setProperty('--success', 'var(--success-gray)');
+                document.documentElement.style.setProperty('--warning', 'var(--warning-gray)');
+                document.documentElement.style.setProperty('--error', 'var(--error-gray)');
+                document.documentElement.style.setProperty('--text', 'var(--text-gray)');
+                document.documentElement.style.setProperty('--bg', 'var(--bg-gray)');
+                document.documentElement.style.setProperty('--card', 'var(--card-gray)');
+                document.documentElement.style.setProperty('--border', 'var(--border-gray)');
+                document.documentElement.style.setProperty('--highlight', 'var(--highlight-gray)');
+            } else {
+                // Светлая тема по умолчанию
+                document.documentElement.style.setProperty('--primary', 'var(--primary-light)');
+                document.documentElement.style.setProperty('--secondary', 'var(--secondary-light)');
+                document.documentElement.style.setProperty('--success', 'var(--success-light)');
+                document.documentElement.style.setProperty('--warning', 'var(--warning-light)');
+                document.documentElement.style.setProperty('--error', 'var(--error-light)');
+                document.documentElement.style.setProperty('--text', 'var(--text-light)');
+                document.documentElement.style.setProperty('--bg', 'var(--bg-light)');
+                document.documentElement.style.setProperty('--card', 'var(--card-light)');
+                document.documentElement.style.setProperty('--border', 'var(--border-light)');
+                document.documentElement.style.setProperty('--highlight', 'var(--highlight-light)');
+            }
+        }
+        
+        // Показ уведомления
+        function showNotification(message, type) {
+            notificationMessage.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Предотвращение удаления текста
+        function preventBackspace(e) {
+            if (e.key === 'Backspace' && isTyping) {
+                e.preventDefault();
+                showNotification('Нельзя удалять текст во время теста!', 'error');
+            }
+        }
+        
+        function preventDelete(e) {
+            if (e.key === 'Delete' && isTyping) {
+                e.preventDefault();
+                showNotification('Нельзя удалять текст во время теста!', 'error');
             }
         }
         
