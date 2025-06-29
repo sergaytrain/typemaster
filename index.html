@@ -797,6 +797,32 @@ document.onmousedown = function(e) {
     return false;
   }
 };
+        document.addEventListener('DOMContentLoaded', function() {
+    // Блокировка правой кнопки мыши
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('mousedown', (e) => {
+        if (e.button === 2) e.preventDefault();
+    });
+
+    // Блокировка F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', (e) => {
+        // F12
+        if (e.key === 'F12' || 
+            // Ctrl+Shift+I (Chrome, Firefox, Edge)
+            (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+            // Ctrl+Shift+J (Chrome)
+            (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+            // Ctrl+U (просмотр исходного кода)
+            (e.ctrlKey && e.key === 'u') ||
+            // DevTools через меню (Chrome: Ctrl+Shift+C)
+            (e.ctrlKey && e.shiftKey && e.key === 'C')) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('DevTools заблокированы');
+            return false;
+        }
+    });
+});
         // Массив с текстами для тренировки
         const texts = [
             "Съешь ещё этих мягких французских булок, да выпей же чаю.",
