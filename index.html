@@ -1424,6 +1424,12 @@
                 showNotification('Нельзя удалять текст во время теста!', 'error');
             }
         }
+document.addEventListener('mousedown', function(event) {
+  if (event.button === 2) { // 2 - это код правой кнопки мыши
+    event.preventDefault();
+    return false;
+  }
+});
         
         // Запуск приложения
         init();
