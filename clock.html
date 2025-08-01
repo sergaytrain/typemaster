@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Часы с Алисой</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+        
+        .clock-container {
+            display: flex;
+            width: 90%;
+            max-width: 600px;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .date-box, .time-box {
+            background-color: #111;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.2);
+        }
+        
+        .date-box {
+            width: 45%;
+            border: 1px solid #1a3b5a;
+        }
+        
+        .time-box {
+            width: 45%;
+            border: 1px solid #2a5a7a;
+            text-align: right;
+        }
+        
+        .day {
+            font-size: 24px;
+            color: #4fc3f7;
+            margin-bottom: 10px;
+        }
+        
+        .full-date {
+            font-size: 18px;
+            color: #81d4fa;
+        }
+        
+        .time {
+            font-size: 48px;
+            color: #00e676;
+            font-weight: bold;
+        }
+        
+        .seconds {
+            font-size: 24px;
+            color: #69f0ae;
+            opacity: 0.8;
+        }
+        
+        .assistant-container {
+            width: 90%;
+            max-width: 600px;
+            background-color: #111;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.2);
+            border: 1px solid #3a1a3a;
+        }
+        
+        .assistant-title {
+            color: #ff4081;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .assistant-title:before {
+            content: "●";
+            color: #ff4081;
+            margin-right: 10px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        
+        .assistant-response {
+            min-height: 60px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        
+        .voice-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        #voice-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            background-color: #222;
+            color: #fff;
+        }
+        
+        #listen-btn {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #listen-btn:hover {
+            background-color: #f50057;
+        }
+        
+        .status {
+            font-size: 12px;
+            color: #9e9e9e;
+            margin-top: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="date-box">
+            <div class="day" id="day">Понедельник</div>
+            <div class="full-date" id="full-date">1 января 2023</div>
+        </div>
+        <div class="time-box">
+            <div class="time" id="time">00:00</div>
+            <div class="seconds" id="seconds">:00</div>
+        </div>
+    </div>
+    
+    <script>
+        // Обновление времени и даты
+        function updateClock() {
+            const now = new Date();
+            
+            // Дни недели и месяцы
+            const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            
+            // Обновление даты
+            document.getElementById('day').textContent = days[now.getDay()];
+            document.getElementById('full-date').textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            
+            // Обновление времени
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            document.getElementById('seconds').textContent = `:${seconds}`;
+        }
+        
+        // Инициализация голосового ассистента
+        function initAssistant() {
+            const responses = {
+                'привет': 'Привет! Как ваши дела?',
+                'как дела': 'У меня всё отлично, спасибо что спросили!',
+                'который час': `Сейчас точно ${new Date().getHours()} часов ${new Date().getMinutes()} минут`,
+                'спасибо': 'Пожалуйста! Обращайтесь ещё!',
+                'пока': 'До свидания! Хорошего дня!',
+                'что ты умеешь': 'Я могу отвечать на простые вопросы, говорить время и дату, и просто поддерживать беседу!',
+                'расскажи анекдот': 'Программист ставит чайник на плиту и уходит ждать письма от заказчика...'
+            };
+            
+            const defaultResponse = 'Извините, я не совсем поняла вопрос. Можете переформулировать?';
+            
+            const listenBtn = document.getElementById('listen-btn');
+            const voiceInput = document.getElementById('voice-input');
+            const assistantResponse = document.getElementById('assistant-response');
+            const status = document.getElementById('status');
+            
+            // Обработка текстового ввода
+            voiceInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processQuery(this.value);
+                    this.value = '';
+                }
+            });
+            
+            // Обработка голосового ввода
+            listenBtn.addEventListener('click', function() {
+                if ('webkitSpeechRecognition' in window) {
+                    status.textContent = 'Слушаю...';
+                    
+                    const recognition = new webkitSpeechRecognition();
+                    recognition.lang = 'ru-RU';
+                    recognition.interimResults = false;
+                    
+                    recognition.onresult = function(event) {
+                        const transcript = event.results[0][0].transcript.toLowerCase();
+                        voiceInput.value = transcript;
+                        processQuery(transcript);
+                    };
+                    
+                    recognition.onerror = function(event) {
+                        status.textContent = 'Ошибка распознавания: ' + event.error;
+                    };
+                    
+                    recognition.onend = function() {
+                        status.textContent = 'Готов к работе';
+                    };
+                    
+                    recognition.start();
+                } else {
+                    status.textContent = 'Голосовой ввод не поддерживается вашим браузером';
+                }
+            });
+            
+            // Обработка запроса
+            function processQuery(query) {
+                query = query.toLowerCase().trim();
+                status.textContent = `Вы сказали: "${query}"`;
+                
+                let response = defaultResponse;
+                
+                // Поиск подходящего ответа
+                for (const [keyword, answer] of Object.entries(responses)) {
+                    if (query.includes(keyword)) {
+                        response = answer;
+                        break;
+                    }
+                }
+                
+                assistantResponse.textContent = response;
+            }
+        }
+        
+        // Инициализация
+        updateClock();
+        setInterval(updateClock, 1000);
+        initAssistant();
+    </script>
+</body>
+</html>
